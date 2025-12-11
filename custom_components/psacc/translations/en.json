@@ -1,0 +1,244 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configurer PSA Car Controller",
+        "description": "Entrez l'URL de votre API PSA Car Controller",
+        "data": {
+          "api_url": "URL de l'API",
+          "update_interval": "Intervalle de mise à jour (minutes)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Impossible de se connecter à l'API. Veuillez vérifier l'URL.",
+      "unknown": "Une erreur inattendue s'est produite"
+    },
+    "abort": {
+      "already_configured": "Cette URL d'API est déjà configurée"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options pour PSA Car Controller",
+        "data": {
+          "update_interval": "Intervalle de mise à jour (minutes)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "battery_level": {
+        "name": "Niveau de batterie"
+      },
+      "range_electric": {
+        "name": "Autonomie électrique"
+      },
+      "range_total": {
+        "name": "Autonomie totale"
+      },
+      "mileage": {
+        "name": "Kilométrage"
+      },
+      "charging_power": {
+        "name": "Puissance de charge"
+      },
+      "charging_time": {
+        "name": "Temps de charge restant"
+      },
+      "consumption": {
+        "name": "Consommation moyenne"
+      },
+      "temperature_exterior": {
+        "name": "Température extérieure"
+      },
+      "charge_threshold": {
+        "name": "Seuil de charge"
+      },
+      "last_update": {
+        "name": "Dernière mise à jour"
+      }
+    },
+    "binary_sensor": {
+      "charging": {
+        "name": "En charge"
+      },
+      "plugged": {
+        "name": "Branché"
+      },
+      "doors_locked": {
+        "name": "Portes verrouillées"
+      },
+      "door_driver": {
+        "name": "Porte conducteur"
+      },
+      "door_passenger": {
+        "name": "Porte passager"
+      },
+      "door_rear_left": {
+        "name": "Porte arrière gauche"
+      },
+      "door_rear_right": {
+        "name": "Porte arrière droite"
+      },
+      "hood": {
+        "name": "Capot"
+      },
+      "trunk": {
+        "name": "Coffre"
+      },
+      "climate": {
+        "name": "Climatisation"
+      }
+    },
+    "switch": {
+      "charging": {
+        "name": "Charge"
+      },
+      "climate": {
+        "name": "Climatisation"
+      }
+    },
+    "button": {
+      "lock_doors": {
+        "name": "Verrouiller les portes"
+      },
+      "unlock_doors": {
+        "name": "Déverrouiller les portes"
+      },
+      "horn": {
+        "name": "Klaxon"
+      },
+      "lights": {
+        "name": "Clignoter les lumières"
+      },
+      "wakeup": {
+        "name": "Réveiller"
+      },
+      "refresh": {
+        "name": "Actualiser les données"
+      }
+    },
+    "number": {
+      "charge_threshold": {
+        "name": "Seuil de charge"
+      },
+      "climate_temperature": {
+        "name": "Température climatisation"
+      }
+    },
+    "select": {
+      "charge_mode": {
+        "name": "Mode de charge",
+        "state": {
+          "immediate": "Immédiat",
+          "scheduled": "Programmé",
+          "economic": "Économique"
+        }
+      }
+    },
+    "device_tracker": {
+      "location": {
+        "name": "Position"
+      }
+    }
+  },
+  "services": {
+    "set_charge_threshold": {
+      "name": "Définir le seuil de charge",
+      "description": "Définir le seuil de charge maximum",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Numéro d'identification du véhicule"
+        },
+        "threshold": {
+          "name": "Seuil",
+          "description": "Niveau de charge maximum (50-100%)"
+        }
+      }
+    },
+    "set_charge_schedule": {
+      "name": "Définir un programme de charge",
+      "description": "Configurer un horaire de charge",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Numéro d'identification du véhicule"
+        },
+        "start_time": {
+          "name": "Heure de début",
+          "description": "Heure de début (HH:MM)"
+        },
+        "end_time": {
+          "name": "Heure de fin",
+          "description": "Heure de fin (HH:MM)"
+        }
+      }
+    },
+    "start_climate": {
+      "name": "Démarrer la climatisation",
+      "description": "Démarrer la climatisation avec une température spécifique",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Numéro d'identification du véhicule"
+        },
+        "temperature": {
+          "name": "Température",
+          "description": "Température cible (16-28°C)"
+        }
+      }
+    },
+    "stop_climate": {
+      "name": "Arrêter la climatisation",
+      "description": "Arrêter la climatisation",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Numéro d'identification du véhicule"
+        }
+      }
+    },
+    "horn": {
+      "name": "Klaxon",
+      "description": "Déclencher le klaxon",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Numéro d'identification du véhicule"
+        },
+        "count": {
+          "name": "Nombre",
+          "description": "Nombre de coups de klaxon (1-5)"
+        }
+      }
+    },
+    "lights": {
+      "name": "Clignoter les lumières",
+      "description": "Faire clignoter les lumières",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Numéro d'identification du véhicule"
+        },
+        "count": {
+          "name": "Nombre",
+          "description": "Nombre de clignotements (1-5)"
+        }
+      }
+    },
+    "wakeup": {
+      "name": "Réveiller",
+      "description": "Réveiller le véhicule",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Numéro d'identification du véhicule"
+        }
+      }
+    }
+  }
+}
