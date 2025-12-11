@@ -1,0 +1,127 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure PSA Car Controller",
+        "description": "Enter the URL of your PSA Car Controller API",
+        "data": {
+          "api_url": "API URL",
+          "update_interval": "Update interval (minutes)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the API. Please check the URL.",
+      "unknown": "An unexpected error occurred"
+    },
+    "abort": {
+      "already_configured": "This API URL is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options for PSA Car Controller",
+        "data": {
+          "update_interval": "Update interval (minutes)"
+        }
+      }
+    }
+  },
+  "services": {
+    "set_charge_threshold": {
+      "name": "Set charge threshold",
+      "description": "Set the maximum charge threshold",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Vehicle identification number"
+        },
+        "threshold": {
+          "name": "Threshold",
+          "description": "Maximum charge level (50-100%)"
+        }
+      }
+    },
+    "set_charge_schedule": {
+      "name": "Set charge schedule",
+      "description": "Configure a charging schedule",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Vehicle identification number"
+        },
+        "start_time": {
+          "name": "Start time",
+          "description": "Start time (HH:MM)"
+        },
+        "end_time": {
+          "name": "End time",
+          "description": "End time (HH:MM)"
+        }
+      }
+    },
+    "start_climate": {
+      "name": "Start climate",
+      "description": "Start climate control with a specific temperature",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Vehicle identification number"
+        },
+        "temperature": {
+          "name": "Temperature",
+          "description": "Target temperature (16-28°C)"
+        }
+      }
+    },
+    "stop_climate": {
+      "name": "Stop climate",
+      "description": "Stop climate control",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Vehicle identification number"
+        }
+      }
+    },
+    "horn": {
+      "name": "Horn",
+      "description": "Sound the horn",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Vehicle identification number"
+        },
+        "count": {
+          "name": "Count",
+          "description": "Number of horn sounds (1-5)"
+        }
+      }
+    },
+    "lights": {
+      "name": "Flash lights",
+      "description": "Flash the lights",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Vehicle identification number"
+        },
+        "count": {
+          "name": "Count",
+          "description": "Number of light flashes (1-5)"
+        }
+      }
+    },
+    "wakeup": {
+      "name": "Wake up",
+      "description": "Wake up the vehicle",
+      "fields": {
+        "vin": {
+          "name": "VIN",
+          "description": "Vehicle identification number"
+        }
+      }
+    }
+  }
+}
