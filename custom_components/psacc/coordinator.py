@@ -19,11 +19,13 @@ class PSACCDataUpdateCoordinator(DataUpdateCoordinator):
         self,
         hass: HomeAssistant,
         api: PSACCApiClient,
+        vin: str,
         update_interval: int,
     ) -> None:
         """Initialize."""
         self.api = api
-        self.vehicles = {}
+        self.vin = vin
+        self.vehicle_data = {}
         
         super().__init__(
             hass,
@@ -35,29 +37,17 @@ class PSACCDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> Dict[str, Any]:
         """Update data via API."""
         try:
-            # Get list of vehicles if not cached
-            if not self.vehicles:
-                vehicles = await self.api.get_vehicles()
-                for vehicle in vehicles:
-                    vin = vehicle.get("vin")
-                    if vin:
-                        self.vehicles[vin] = vehicle
-
-            # Update status for each vehicle
-            data = {}
-            for vin in self.vehicles:
-                try:
-                    status = await self.api.get_vehicle_status(vin)
-                    data[vin] = {
-                        **self.vehicles[vin],
-                        **status,
-                    }
-                except PSACCApiError as err:
-                    _LOGGER.warning("Failed to update vehicle %s: %s", vin, err)
-                    # Keep previous data if update fails
-                    if vin in self.data:
-                        data[vin] = self.data[vin]
-
+            # Récupérer le statut du véhicule avec le VIN
+            status = await self.api.get_vehicle_status(self.vin)
+            
+            # Stocker les données avec le VIN comme clé
+            data = {
+                self.vin: {
+                    "vin": self.vin,
+                    **status,
+                }
+            }
+            
             return data
 
         except PSACCApiError as err:
