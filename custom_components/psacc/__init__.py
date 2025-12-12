@@ -13,6 +13,7 @@ from .const import (
     DOMAIN,
     CONF_API_URL,
     CONF_UPDATE_INTERVAL,
+    CONF_VIN,
     DEFAULT_UPDATE_INTERVAL,
     SERVICE_SET_CHARGE_THRESHOLD,
     SERVICE_SET_CHARGE_SCHEDULE,
@@ -86,12 +87,13 @@ SERVICE_WAKEUP_SCHEMA = vol.Schema(
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up PSA Car Controller from a config entry."""
     api_url = entry.data[CONF_API_URL]
+    vin = entry.data[CONF_VIN]
     update_interval = entry.data.get(CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL)
 
     session = aiohttp_client.async_get_clientsession(hass)
     api = PSACCApiClient(api_url, session)
 
-    coordinator = PSACCDataUpdateCoordinator(hass, api, update_interval)
+    coordinator = PSACCDataUpdateCoordinator(hass, api, vin, update_interval)
 
     # Fetch initial data
     await coordinator.async_config_entry_first_refresh()
@@ -100,6 +102,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = {
         "coordinator": coordinator,
         "api": api,
+        "vin": vin,
     }
 
     # Register services
