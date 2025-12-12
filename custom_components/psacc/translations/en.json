@@ -2,28 +2,28 @@
   "config": {
     "step": {
       "user": {
-        "title": "Configurer PSA Car Controller",
-        "description": "Entrez l'URL de votre API PSA Car Controller",
+        "title": "Configure PSA Car Controller",
+        "description": "Enter the URL of your PSA Car Controller API",
         "data": {
-          "api_url": "URL de l'API",
-          "update_interval": "Intervalle de mise à jour (minutes)"
+          "api_url": "API URL",
+          "update_interval": "Update interval (minutes)"
         }
       }
     },
     "error": {
-      "cannot_connect": "Impossible de se connecter à l'API. Veuillez vérifier l'URL.",
-      "unknown": "Une erreur inattendue s'est produite"
+      "cannot_connect": "Failed to connect to the API. Please check the URL.",
+      "unknown": "An unexpected error occurred"
     },
     "abort": {
-      "already_configured": "Cette URL d'API est déjà configurée"
+      "already_configured": "This API URL is already configured"
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Options pour PSA Car Controller",
+        "title": "Options for PSA Car Controller",
         "data": {
-          "update_interval": "Intervalle de mise à jour (minutes)"
+          "update_interval": "Update interval (minutes)"
         }
       }
     }
@@ -31,212 +31,212 @@
   "entity": {
     "sensor": {
       "battery_level": {
-        "name": "Niveau de batterie"
+        "name": "Battery level"
       },
       "range_electric": {
-        "name": "Autonomie électrique"
+        "name": "Electric range"
       },
       "range_total": {
-        "name": "Autonomie totale"
+        "name": "Total range"
       },
       "mileage": {
-        "name": "Kilométrage"
+        "name": "Mileage"
       },
       "charging_power": {
-        "name": "Puissance de charge"
+        "name": "Charging power"
       },
       "charging_time": {
-        "name": "Temps de charge restant"
+        "name": "Charging time remaining"
       },
       "consumption": {
-        "name": "Consommation moyenne"
+        "name": "Average consumption"
       },
       "temperature_exterior": {
-        "name": "Température extérieure"
+        "name": "Exterior temperature"
       },
       "charge_threshold": {
-        "name": "Seuil de charge"
+        "name": "Charge threshold"
       },
       "last_update": {
-        "name": "Dernière mise à jour"
+        "name": "Last update"
       }
     },
     "binary_sensor": {
       "charging": {
-        "name": "En charge"
+        "name": "Charging"
       },
       "plugged": {
-        "name": "Branché"
+        "name": "Plugged in"
       },
       "doors_locked": {
-        "name": "Portes verrouillées"
+        "name": "Doors locked"
       },
       "door_driver": {
-        "name": "Porte conducteur"
+        "name": "Driver door"
       },
       "door_passenger": {
-        "name": "Porte passager"
+        "name": "Passenger door"
       },
       "door_rear_left": {
-        "name": "Porte arrière gauche"
+        "name": "Rear left door"
       },
       "door_rear_right": {
-        "name": "Porte arrière droite"
+        "name": "Rear right door"
       },
       "hood": {
-        "name": "Capot"
+        "name": "Hood"
       },
       "trunk": {
-        "name": "Coffre"
+        "name": "Trunk"
       },
       "climate": {
-        "name": "Climatisation"
+        "name": "Climate control"
       }
     },
     "switch": {
       "charging": {
-        "name": "Charge"
+        "name": "Charging"
       },
       "climate": {
-        "name": "Climatisation"
+        "name": "Climate control"
       }
     },
     "button": {
       "lock_doors": {
-        "name": "Verrouiller les portes"
+        "name": "Lock doors"
       },
       "unlock_doors": {
-        "name": "Déverrouiller les portes"
+        "name": "Unlock doors"
       },
       "horn": {
-        "name": "Klaxon"
+        "name": "Horn"
       },
       "lights": {
-        "name": "Clignoter les lumières"
+        "name": "Flash lights"
       },
       "wakeup": {
-        "name": "Réveiller"
+        "name": "Wake up"
       },
       "refresh": {
-        "name": "Actualiser les données"
+        "name": "Refresh data"
       }
     },
     "number": {
       "charge_threshold": {
-        "name": "Seuil de charge"
+        "name": "Charge threshold"
       },
       "climate_temperature": {
-        "name": "Température climatisation"
+        "name": "Climate temperature"
       }
     },
     "select": {
       "charge_mode": {
-        "name": "Mode de charge",
+        "name": "Charge mode",
         "state": {
-          "immediate": "Immédiat",
-          "scheduled": "Programmé",
-          "economic": "Économique"
+          "immediate": "Immediate",
+          "scheduled": "Scheduled",
+          "economic": "Economic"
         }
       }
     },
     "device_tracker": {
       "location": {
-        "name": "Position"
+        "name": "Location"
       }
     }
   },
   "services": {
     "set_charge_threshold": {
-      "name": "Définir le seuil de charge",
-      "description": "Définir le seuil de charge maximum",
+      "name": "Set charge threshold",
+      "description": "Set the maximum charge threshold for the vehicle battery",
       "fields": {
         "vin": {
           "name": "VIN",
-          "description": "Numéro d'identification du véhicule"
+          "description": "Vehicle identification number"
         },
         "threshold": {
-          "name": "Seuil",
-          "description": "Niveau de charge maximum (50-100%)"
+          "name": "Threshold",
+          "description": "Maximum charge level (50-100%)"
         }
       }
     },
     "set_charge_schedule": {
-      "name": "Définir un programme de charge",
-      "description": "Configurer un horaire de charge",
+      "name": "Set charge schedule",
+      "description": "Configure a charging schedule with start and end times",
       "fields": {
         "vin": {
           "name": "VIN",
-          "description": "Numéro d'identification du véhicule"
+          "description": "Vehicle identification number"
         },
         "start_time": {
-          "name": "Heure de début",
-          "description": "Heure de début (HH:MM)"
+          "name": "Start time",
+          "description": "Start time for charging (HH:MM format)"
         },
         "end_time": {
-          "name": "Heure de fin",
-          "description": "Heure de fin (HH:MM)"
+          "name": "End time",
+          "description": "End time for charging (HH:MM format)"
         }
       }
     },
     "start_climate": {
-      "name": "Démarrer la climatisation",
-      "description": "Démarrer la climatisation avec une température spécifique",
+      "name": "Start climate control",
+      "description": "Start climate control with a specific temperature",
       "fields": {
         "vin": {
           "name": "VIN",
-          "description": "Numéro d'identification du véhicule"
+          "description": "Vehicle identification number"
         },
         "temperature": {
-          "name": "Température",
-          "description": "Température cible (16-28°C)"
+          "name": "Temperature",
+          "description": "Target temperature (16-28°C)"
         }
       }
     },
     "stop_climate": {
-      "name": "Arrêter la climatisation",
-      "description": "Arrêter la climatisation",
+      "name": "Stop climate control",
+      "description": "Stop climate control",
       "fields": {
         "vin": {
           "name": "VIN",
-          "description": "Numéro d'identification du véhicule"
+          "description": "Vehicle identification number"
         }
       }
     },
     "horn": {
-      "name": "Klaxon",
-      "description": "Déclencher le klaxon",
+      "name": "Sound horn",
+      "description": "Sound the vehicle horn",
       "fields": {
         "vin": {
           "name": "VIN",
-          "description": "Numéro d'identification du véhicule"
+          "description": "Vehicle identification number"
         },
         "count": {
-          "name": "Nombre",
-          "description": "Nombre de coups de klaxon (1-5)"
+          "name": "Count",
+          "description": "Number of horn sounds (1-5)"
         }
       }
     },
     "lights": {
-      "name": "Clignoter les lumières",
-      "description": "Faire clignoter les lumières",
+      "name": "Flash lights",
+      "description": "Flash the vehicle lights",
       "fields": {
         "vin": {
           "name": "VIN",
-          "description": "Numéro d'identification du véhicule"
+          "description": "Vehicle identification number"
         },
         "count": {
-          "name": "Nombre",
-          "description": "Nombre de clignotements (1-5)"
+          "name": "Count",
+          "description": "Number of light flashes (1-5)"
         }
       }
     },
     "wakeup": {
-      "name": "Réveiller",
-      "description": "Réveiller le véhicule",
+      "name": "Wake up vehicle",
+      "description": "Wake up the vehicle to refresh data",
       "fields": {
         "vin": {
           "name": "VIN",
-          "description": "Numéro d'identification du véhicule"
+          "description": "Vehicle identification number"
         }
       }
     }
