@@ -4,6 +4,7 @@ from datetime import timedelta
 DOMAIN = "psacc"
 CONF_API_URL = "api_url"
 CONF_UPDATE_INTERVAL = "update_interval"
+CONF_VIN = "vin"
 
 DEFAULT_UPDATE_INTERVAL = 5  # minutes
 MIN_UPDATE_INTERVAL = 1
