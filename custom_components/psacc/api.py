@@ -56,9 +56,22 @@ class PSACCApiClient:
                 method, url, json=data, timeout=self._timeout
             ) as response:
                 response.raise_for_status()
-                result = await response.json()
-                _LOGGER.debug("Response: %s", result)
-                return result
+                
+                # Vérifier le type de contenu
+                content_type = response.headers.get('content-type', '')
+                
+                if 'application/json' in content_type:
+                    result = await response.json()
+                    _LOGGER.debug("Response: %s", result)
+                    return result
+                elif 'text/html' in content_type:
+                    # L'API retourne du HTML, probablement le dashboard
+                    _LOGGER.error("API returned HTML instead of JSON. Check if endpoint %s is correct", endpoint)
+                    raise PSACCApiError(f"API returned HTML instead of JSON for {endpoint}")
+                else:
+                    text = await response.text()
+                    _LOGGER.error("Unexpected content type %s: %s", content_type, text[:200])
+                    raise PSACCApiError(f"Unexpected content type: {content_type}")
                 
         except asyncio.TimeoutError as err:
             _LOGGER.error("Timeout connecting to PSACC API: %s", err)
@@ -72,12 +85,11 @@ class PSACCApiClient:
 
     async def get_vehicles(self) -> list:
         """Get list of vehicles."""
-        try:
-            response = await self._request("GET", API_VEHICLES)
-            return response if isinstance(response, list) else []
-        except Exception as err:
-            _LOGGER.error("Failed to get vehicles: %s", err)
-            return []
+        # Le PSA Car Controller ne retourne pas de liste de véhicules
+        # On doit utiliser get_vehicleinfo avec un VIN
+        # Retourner une liste vide pour l'instant
+        _LOGGER.warning("get_vehicles is not supported by PSA Car Controller API")
+        return []
 
     async def get_vehicle_status(self, vin: str) -> Dict[str, Any]:
         """Get vehicle status."""
