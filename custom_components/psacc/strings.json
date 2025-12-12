@@ -6,6 +6,7 @@
         "description": "Enter the URL of your PSA Car Controller API",
         "data": {
           "api_url": "API URL",
+          "vin": "Vehicle VIN",
           "update_interval": "Update interval (minutes)"
         }
       }
