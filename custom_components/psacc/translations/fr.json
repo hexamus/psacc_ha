@@ -6,6 +6,7 @@
         "description": "Entrez l'URL de votre API PSA Car Controller",
         "data": {
           "api_url": "URL de l'API",
+          "vin": "VIN du véhicule",
           "update_interval": "Intervalle de mise à jour (minutes)"
         }
       }
@@ -25,6 +26,123 @@
         "data": {
           "update_interval": "Intervalle de mise à jour (minutes)"
         }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "battery_level": {
+        "name": "Niveau de batterie"
+      },
+      "range_electric": {
+        "name": "Autonomie électrique"
+      },
+      "range_total": {
+        "name": "Autonomie totale"
+      },
+      "mileage": {
+        "name": "Kilométrage"
+      },
+      "charging_power": {
+        "name": "Puissance de charge"
+      },
+      "charging_time": {
+        "name": "Temps de charge restant"
+      },
+      "consumption": {
+        "name": "Consommation moyenne"
+      },
+      "temperature_exterior": {
+        "name": "Température extérieure"
+      },
+      "charge_threshold": {
+        "name": "Seuil de charge"
+      },
+      "last_update": {
+        "name": "Dernière mise à jour"
+      }
+    },
+    "binary_sensor": {
+      "charging": {
+        "name": "En charge"
+      },
+      "plugged": {
+        "name": "Branché"
+      },
+      "doors_locked": {
+        "name": "Portes verrouillées"
+      },
+      "door_driver": {
+        "name": "Porte conducteur"
+      },
+      "door_passenger": {
+        "name": "Porte passager"
+      },
+      "door_rear_left": {
+        "name": "Porte arrière gauche"
+      },
+      "door_rear_right": {
+        "name": "Porte arrière droite"
+      },
+      "hood": {
+        "name": "Capot"
+      },
+      "trunk": {
+        "name": "Coffre"
+      },
+      "climate": {
+        "name": "Climatisation"
+      }
+    },
+    "switch": {
+      "charging": {
+        "name": "Charge"
+      },
+      "climate": {
+        "name": "Climatisation"
+      }
+    },
+    "button": {
+      "lock_doors": {
+        "name": "Verrouiller les portes"
+      },
+      "unlock_doors": {
+        "name": "Déverrouiller les portes"
+      },
+      "horn": {
+        "name": "Klaxon"
+      },
+      "lights": {
+        "name": "Clignoter les lumières"
+      },
+      "wakeup": {
+        "name": "Réveiller"
+      },
+      "refresh": {
+        "name": "Actualiser les données"
+      }
+    },
+    "number": {
+      "charge_threshold": {
+        "name": "Seuil de charge"
+      },
+      "climate_temperature": {
+        "name": "Température climatisation"
+      }
+    },
+    "select": {
+      "charge_mode": {
+        "name": "Mode de charge",
+        "state": {
+          "immediate": "Immédiat",
+          "scheduled": "Programmé",
+          "economic": "Économique"
+        }
+      }
+    },
+    "device_tracker": {
+      "location": {
+        "name": "Position"
       }
     }
   },
