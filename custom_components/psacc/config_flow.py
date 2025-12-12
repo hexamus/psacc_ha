@@ -14,6 +14,7 @@ from .const import (
     DOMAIN,
     CONF_API_URL,
     CONF_UPDATE_INTERVAL,
+    CONF_VIN,
     DEFAULT_UPDATE_INTERVAL,
     MIN_UPDATE_INTERVAL,
     MAX_UPDATE_INTERVAL,
@@ -34,25 +35,28 @@ class PSACCConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             api_url = user_input[CONF_API_URL]
+            vin = user_input[CONF_VIN]
             
             # Test the connection
             session = aiohttp_client.async_get_clientsession(self.hass)
             api = PSACCApiClient(api_url, session)
             
             try:
-                if await api.test_connection():
-                    await self.async_set_unique_id(api_url)
-                    self._abort_if_unique_id_configured()
-                    
-                    return self.async_create_entry(
-                        title="PSA Car Controller",
-                        data={
-                            CONF_API_URL: api_url,
-                            CONF_UPDATE_INTERVAL: user_input.get(
-                                CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL
-                            ),
-                        },
-                    )
+                # Test avec le VIN fourni
+                await api.get_vehicle_status(vin)
+                await self.async_set_unique_id(f"{api_url}_{vin}")
+                self._abort_if_unique_id_configured()
+                
+                return self.async_create_entry(
+                    title=f"PSA Car Controller ({vin[-4:]})",
+                    data={
+                        CONF_API_URL: api_url,
+                        CONF_VIN: vin,
+                        CONF_UPDATE_INTERVAL: user_input.get(
+                            CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL
+                        ),
+                    },
+                )
             except PSACCApiConnectionError:
                 errors["base"] = "cannot_connect"
             except Exception:  # pylint: disable=broad-except
@@ -64,6 +68,7 @@ class PSACCConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=vol.Schema(
                 {
                     vol.Required(CONF_API_URL, default="http://"): cv.string,
+                    vol.Required(CONF_VIN): cv.string,
                     vol.Optional(
                         CONF_UPDATE_INTERVAL,
                         default=DEFAULT_UPDATE_INTERVAL,
@@ -86,9 +91,9 @@ class PSACCConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 class PSACCOptionsFlowHandler(config_entries.OptionsFlow):
     """Handle options."""
 
-    def __init__(self, config_entry):
+    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
         """Initialize options flow."""
-        self.config_entry = config_entry
+        self._config_entry = config_entry
 
     async def async_step_init(self, user_input=None):
         """Manage the options."""
@@ -101,7 +106,7 @@ class PSACCOptionsFlowHandler(config_entries.OptionsFlow):
                 {
                     vol.Optional(
                         CONF_UPDATE_INTERVAL,
-                        default=self.config_entry.data.get(
+                        default=self._config_entry.data.get(
                             CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL
                         ),
                     ): vol.All(
