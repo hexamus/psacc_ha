@@ -1,11 +1,8 @@
 {
-  "domain": "psacc",
   "name": "PSA Car Controller",
-  "documentation": "https://github.com/hexamus/psacc_ha",
-  "codeowners": ["@hexamus"],
-  "config_flow": true,
-  "dependencies": [],
-  "requirements": [],
-  "version": "1.0.0",
-  "iot_class": "cloud_polling"
+  "content_in_root": false,
+  "filename": "psacc_ha.zip",
+  "render_readme": true,
+  "zip_release": false,
+  "hide_default_branch": false
 }
