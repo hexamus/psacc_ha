@@ -1,7 +1,7 @@
 {
   "domain": "psacc",
   "name": "PSA Car Controller",
-  "documentation": "https://github.com/flobz/psa_car_controller",
+  "documentation": "https://github.com/hexamus/psacc_ha",
   "codeowners": ["@hexamus"],
   "config_flow": true,
   "dependencies": [],
