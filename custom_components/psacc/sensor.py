@@ -53,6 +53,8 @@ async def async_setup_entry(
             PSACCTemperatureExteriorSensor(coordinator, vin),
             PSACCChargeThresholdSensor(coordinator, vin),
             PSACCLastUpdateSensor(coordinator, vin),
+            PSACCChargingModeSensor(coordinator, vin),
+            PSACCChargingStatusSensor(coordinator, vin),
         ])
     
     async_add_entities(entities)
@@ -289,3 +291,39 @@ class PSACCLastUpdateSensor(PSACCBaseSensor):
     def native_value(self):
         """Return the state."""
         return self.vehicle_data.get("energy_updated_at")
+
+
+class PSACCChargingModeSensor(PSACCBaseSensor):
+    """Mode de charge remonté par la voiture : No / Slow / Quick."""
+
+    _attr_name = "Charging mode"
+    _attr_icon = ICON_CHARGING
+    _attr_device_class = SensorDeviceClass.ENUM
+    _attr_options = ["No", "Slow", "Quick"]
+
+    @property
+    def unique_id(self):
+        return f"{self._vin}_charging_mode"
+
+    @property
+    def native_value(self):
+        mode = self.vehicle_data.get("charging_mode")
+        return mode if mode in self._attr_options else None
+
+
+class PSACCChargingStatusSensor(PSACCBaseSensor):
+    """Statut de charge : Disconnected / InProgress / Failure / Stopped / Finished."""
+
+    _attr_name = "Charging status"
+    _attr_icon = ICON_CHARGING
+    _attr_device_class = SensorDeviceClass.ENUM
+    _attr_options = ["Disconnected", "InProgress", "Failure", "Stopped", "Finished"]
+
+    @property
+    def unique_id(self):
+        return f"{self._vin}_charging_status"
+
+    @property
+    def native_value(self):
+        status = self.vehicle_data.get("charging_status")
+        return status if status in self._attr_options else None

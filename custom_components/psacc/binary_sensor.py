@@ -264,4 +264,4 @@ class PSACCClimateBinarySensor(PSACCBaseBinarySensor):
     def is_on(self):
         """Return true if climate is active."""
         status = self.vehicle_data.get("climate_status")
-        return status in ["Enabled", "InProgress"]
+        return status == "Enabled"

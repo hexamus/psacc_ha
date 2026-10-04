@@ -118,7 +118,7 @@ class PSACCClimateSwitch(PSACCBaseSwitch):
     def is_on(self):
         """Return true if climate is on."""
         status = self.vehicle_data.get("climate_status")
-        return status in ["Enabled", "InProgress"]
+        return status == "Enabled"
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn on climate."""

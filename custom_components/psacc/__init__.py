@@ -40,7 +40,6 @@ PLATFORMS = [
     Platform.SWITCH,
     Platform.BUTTON,
     Platform.NUMBER,
-    Platform.SELECT,
 ]
 
 # Service schemas
