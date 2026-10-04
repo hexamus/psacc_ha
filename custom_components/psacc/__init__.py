@@ -88,7 +88,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up PSA Car Controller from a config entry."""
     api_url = entry.data[CONF_API_URL]
     vin = entry.data[CONF_VIN]
-    update_interval = entry.data.get(CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL)
+    update_interval = entry.options.get(
+        CONF_UPDATE_INTERVAL,
+        entry.data.get(CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL),
+    )
 
     session = aiohttp_client.async_get_clientsession(hass)
     api = PSACCApiClient(api_url, session)
@@ -150,7 +153,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         """Handle wakeup service."""
         vin = call.data[ATTR_VIN]
         await api.wakeup(vin)
-        await coordinator.async_request_refresh()
+        await coordinator.async_refresh_from_car()
 
     hass.services.async_register(
         DOMAIN,
@@ -189,7 +192,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Setup platforms
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
+    # Recharger l'intégration quand les options (intervalle) changent
+    entry.async_on_unload(entry.add_update_listener(_async_options_updated))
+
     return True
+
+
+async def _async_options_updated(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Reload on options change."""
+    await hass.config_entries.async_reload(entry.entry_id)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

@@ -77,16 +77,12 @@ class PSACCDeviceTracker(CoordinatorEntity, TrackerEntity):
     @property
     def latitude(self) -> float | None:
         """Return latitude."""
-        position = self.vehicle_data.get("position", {})
-        coordinates = position.get("geometry", {}).get("coordinates", [])
-        return coordinates[1] if len(coordinates) >= 2 else None
+        return self.vehicle_data.get("latitude")
 
     @property
     def longitude(self) -> float | None:
         """Return longitude."""
-        position = self.vehicle_data.get("position", {})
-        coordinates = position.get("geometry", {}).get("coordinates", [])
-        return coordinates[0] if len(coordinates) >= 2 else None
+        return self.vehicle_data.get("longitude")
 
     @property
     def location_accuracy(self) -> int:
@@ -96,12 +92,10 @@ class PSACCDeviceTracker(CoordinatorEntity, TrackerEntity):
     @property
     def extra_state_attributes(self):
         """Return extra state attributes."""
-        position = self.vehicle_data.get("position", {})
-        properties = position.get("properties", {})
-        
+        data = self.vehicle_data
+        updated = data.get("position_updated_at")
         return {
-            "altitude": properties.get("altitude"),
-            "heading": properties.get("heading"),
-            "updated_at": properties.get("updatedAt"),
-            "signal_quality": properties.get("signalQuality"),
+            "altitude": data.get("altitude"),
+            "heading": data.get("heading"),
+            "updated_at": updated.isoformat() if updated else None,
         }

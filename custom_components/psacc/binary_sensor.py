@@ -94,8 +94,7 @@ class PSACCChargingBinarySensor(PSACCBaseBinarySensor):
     @property
     def is_on(self):
         """Return true if charging."""
-        charging = self.vehicle_data.get("energy", [{}])[0].get("charging", {})
-        return charging.get("status") == "InProgress"
+        return self.vehicle_data.get("charging")
 
 
 class PSACCPluggedBinarySensor(PSACCBaseBinarySensor):
@@ -113,8 +112,7 @@ class PSACCPluggedBinarySensor(PSACCBaseBinarySensor):
     @property
     def is_on(self):
         """Return true if plugged."""
-        charging = self.vehicle_data.get("energy", [{}])[0].get("charging", {})
-        return charging.get("plugged", False)
+        return self.vehicle_data.get("plugged")
 
 
 class PSACCDoorsLockedBinarySensor(PSACCBaseBinarySensor):
@@ -131,9 +129,9 @@ class PSACCDoorsLockedBinarySensor(PSACCBaseBinarySensor):
 
     @property
     def is_on(self):
-        """Return true if doors are locked."""
-        precond = self.vehicle_data.get("preconditionning", {})
-        return precond.get("airConditioning", {}).get("status") == "Enabled"
+        """Device class LOCK : on = déverrouillé, off = verrouillé."""
+        locked = self.vehicle_data.get("doors_locked")
+        return None if locked is None else not locked
 
 
 class PSACCDoorDriverBinarySensor(PSACCBaseBinarySensor):
@@ -151,8 +149,8 @@ class PSACCDoorDriverBinarySensor(PSACCBaseBinarySensor):
     @property
     def is_on(self):
         """Return true if door is open."""
-        doors = self.vehicle_data.get("doors", {})
-        return doors.get("driver") == "Open"
+        state = self.vehicle_data.get("doors", {}).get("driver")
+        return None if state is None else state == "Open"
 
 
 class PSACCDoorPassengerBinarySensor(PSACCBaseBinarySensor):
@@ -170,8 +168,8 @@ class PSACCDoorPassengerBinarySensor(PSACCBaseBinarySensor):
     @property
     def is_on(self):
         """Return true if door is open."""
-        doors = self.vehicle_data.get("doors", {})
-        return doors.get("passenger") == "Open"
+        state = self.vehicle_data.get("doors", {}).get("passenger")
+        return None if state is None else state == "Open"
 
 
 class PSACCDoorRearLeftBinarySensor(PSACCBaseBinarySensor):
@@ -189,8 +187,8 @@ class PSACCDoorRearLeftBinarySensor(PSACCBaseBinarySensor):
     @property
     def is_on(self):
         """Return true if door is open."""
-        doors = self.vehicle_data.get("doors", {})
-        return doors.get("rear_left") == "Open"
+        state = self.vehicle_data.get("doors", {}).get("rearleft")
+        return None if state is None else state == "Open"
 
 
 class PSACCDoorRearRightBinarySensor(PSACCBaseBinarySensor):
@@ -208,8 +206,8 @@ class PSACCDoorRearRightBinarySensor(PSACCBaseBinarySensor):
     @property
     def is_on(self):
         """Return true if door is open."""
-        doors = self.vehicle_data.get("doors", {})
-        return doors.get("rear_right") == "Open"
+        state = self.vehicle_data.get("doors", {}).get("rearright")
+        return None if state is None else state == "Open"
 
 
 class PSACCHoodBinarySensor(PSACCBaseBinarySensor):
@@ -227,8 +225,8 @@ class PSACCHoodBinarySensor(PSACCBaseBinarySensor):
     @property
     def is_on(self):
         """Return true if hood is open."""
-        doors = self.vehicle_data.get("doors", {})
-        return doors.get("hood") == "Open"
+        state = self.vehicle_data.get("doors", {}).get("hood")
+        return None if state is None else state == "Open"
 
 
 class PSACCTrunkBinarySensor(PSACCBaseBinarySensor):
@@ -246,8 +244,8 @@ class PSACCTrunkBinarySensor(PSACCBaseBinarySensor):
     @property
     def is_on(self):
         """Return true if trunk is open."""
-        doors = self.vehicle_data.get("doors", {})
-        return doors.get("trunk") == "Open"
+        state = self.vehicle_data.get("doors", {}).get("trunk")
+        return None if state is None else state == "Open"
 
 
 class PSACCClimateBinarySensor(PSACCBaseBinarySensor):
@@ -265,6 +263,5 @@ class PSACCClimateBinarySensor(PSACCBaseBinarySensor):
     @property
     def is_on(self):
         """Return true if climate is active."""
-        precond = self.vehicle_data.get("preconditionning", {})
-        status = precond.get("airConditioning", {}).get("status")
+        status = self.vehicle_data.get("climate_status")
         return status in ["Enabled", "InProgress"]

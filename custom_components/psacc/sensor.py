@@ -106,7 +106,7 @@ class PSACCBatteryLevelSensor(PSACCBaseSensor):
     @property
     def native_value(self):
         """Return the state."""
-        return self.vehicle_data.get("energy", [{}])[0].get("level")
+        return self.vehicle_data.get("battery_level")
 
 
 class PSACCRangeElectricSensor(PSACCBaseSensor):
@@ -126,7 +126,7 @@ class PSACCRangeElectricSensor(PSACCBaseSensor):
     @property
     def native_value(self):
         """Return the state."""
-        return self.vehicle_data.get("energy", [{}])[0].get("autonomy")
+        return self.vehicle_data.get("range_electric")
 
 
 class PSACCRangeTotalSensor(PSACCBaseSensor):
@@ -147,11 +147,9 @@ class PSACCRangeTotalSensor(PSACCBaseSensor):
     def native_value(self):
         """Return the state."""
         # Sum electric and fuel range if available
-        electric = self.vehicle_data.get("energy", [{}])[0].get("autonomy", 0) or 0
-        fuel = self.vehicle_data.get("energy", [{}])[1].get("autonomy", 0) if len(
-            self.vehicle_data.get("energy", [])
-        ) > 1 else 0
-        return electric + fuel if electric or fuel else None
+        electric = self.vehicle_data.get("range_electric") or 0
+        fuel = self.vehicle_data.get("range_fuel") or 0
+        return electric + fuel
 
 
 class PSACCMileageSensor(PSACCBaseSensor):
@@ -171,16 +169,17 @@ class PSACCMileageSensor(PSACCBaseSensor):
     @property
     def native_value(self):
         """Return the state."""
-        return self.vehicle_data.get("odometer", {}).get("mileage")
+        return self.vehicle_data.get("mileage")
 
 
 class PSACCChargingPowerSensor(PSACCBaseSensor):
     """Charging power sensor."""
 
+    # psacc ne remonte pas de puissance : charging_rate est une vitesse
+    # de recharge en km d'autonomie gagnés par heure.
     _attr_name = "Charging power"
-    _attr_device_class = SensorDeviceClass.POWER
     _attr_state_class = SensorStateClass.MEASUREMENT
-    _attr_native_unit_of_measurement = UnitOfPower.KILO_WATT
+    _attr_native_unit_of_measurement = "km/h"
     _attr_icon = ICON_CHARGING
 
     @property
@@ -191,9 +190,8 @@ class PSACCChargingPowerSensor(PSACCBaseSensor):
     @property
     def native_value(self):
         """Return the state."""
-        charging = self.vehicle_data.get("energy", [{}])[0].get("charging", {})
-        if charging.get("status") == "InProgress":
-            return charging.get("rate")
+        if self.vehicle_data.get("charging"):
+            return self.vehicle_data.get("charging_rate") or 0
         return 0
 
 
@@ -213,9 +211,8 @@ class PSACCChargingTimeSensor(PSACCBaseSensor):
     @property
     def native_value(self):
         """Return the state."""
-        charging = self.vehicle_data.get("energy", [{}])[0].get("charging", {})
-        if charging.get("status") == "InProgress":
-            return charging.get("remaining_time")
+        if self.vehicle_data.get("charging"):
+            return self.vehicle_data.get("charging_remaining_min")
         return None
 
 
@@ -235,7 +232,7 @@ class PSACCConsumptionSensor(PSACCBaseSensor):
     @property
     def native_value(self):
         """Return the state."""
-        return self.vehicle_data.get("environment", {}).get("consumption")
+        return self.vehicle_data.get("consumption")
 
 
 class PSACCTemperatureExteriorSensor(PSACCBaseSensor):
@@ -255,7 +252,7 @@ class PSACCTemperatureExteriorSensor(PSACCBaseSensor):
     @property
     def native_value(self):
         """Return the state."""
-        return self.vehicle_data.get("environment", {}).get("temperature")
+        return self.vehicle_data.get("temperature_exterior")
 
 
 class PSACCChargeThresholdSensor(PSACCBaseSensor):
@@ -274,8 +271,7 @@ class PSACCChargeThresholdSensor(PSACCBaseSensor):
     @property
     def native_value(self):
         """Return the state."""
-        charging = self.vehicle_data.get("energy", [{}])[0].get("charging", {})
-        return charging.get("charge_threshold", 100)
+        return self.vehicle_data.get("charge_threshold")
 
 
 class PSACCLastUpdateSensor(PSACCBaseSensor):
@@ -292,4 +288,4 @@ class PSACCLastUpdateSensor(PSACCBaseSensor):
     @property
     def native_value(self):
         """Return the state."""
-        return self.vehicle_data.get("updatedAt")
+        return self.vehicle_data.get("energy_updated_at")

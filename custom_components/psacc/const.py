@@ -10,20 +10,16 @@ DEFAULT_UPDATE_INTERVAL = 5  # minutes
 MIN_UPDATE_INTERVAL = 1
 MAX_UPDATE_INTERVAL = 60
 
-# API Endpoints
-API_VEHICLES = "/vehicles"
+# API Endpoints (psa_car_controller — toutes les routes sont en GET)
 API_STATUS = "/get_vehicleinfo/{vin}"
 API_CHARGE_NOW = "/charge_now/{vin}/{charge}"
-API_CHARGE_HOUR = "/charge_control"
-API_CLIMATE_START = "/climate/{vin}/{temperature}"
-API_CLIMATE_STOP = "/climate/{vin}/0"
+API_CHARGE_HOUR = "/charge_hour"
+API_CHARGE_CONTROL = "/charge_control"
+API_PRECONDITIONING = "/preconditioning/{vin}/{activate}"
 API_WAKEUP = "/wakeup/{vin}"
 API_HORN = "/horn/{vin}/{count}"
-API_LIGHTS = "/lights/{vin}/{count}"
-API_LOCK = "/door_lock/{vin}"
-API_UNLOCK = "/door_unlock/{vin}"
-API_PRECONDITIONING = "/preconditioning/{vin}/{temp}"
-API_CHARGE_THRESHOLD = "/charge_control"
+API_LIGHTS = "/lights/{vin}/{duration}"
+API_LOCK = "/lock_door/{vin}/{lock}"
 
 # Entity attributes
 ATTR_VIN = "vin"

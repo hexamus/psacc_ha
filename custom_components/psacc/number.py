@@ -88,8 +88,7 @@ class PSACCChargeThresholdNumber(PSACCBaseNumber):
     @property
     def native_value(self):
         """Return the current value."""
-        charging = self.vehicle_data.get("energy", [{}])[0].get("charging", {})
-        return charging.get("charge_threshold", 100)
+        return self.vehicle_data.get("charge_threshold")
 
     async def async_set_native_value(self, value: float) -> None:
         """Set new value."""
@@ -115,11 +114,10 @@ class PSACCClimateTemperatureNumber(PSACCBaseNumber):
     @property
     def native_value(self):
         """Return the current value."""
-        precond = self.vehicle_data.get("preconditionning", {})
-        return precond.get("airConditioning", {}).get("temperature", 21.0)
+        # psacc ne remonte pas la consigne : valeur locale, utilisée par le switch
+        return getattr(self, "_target", 21.0)
 
     async def async_set_native_value(self, value: float) -> None:
         """Set new value."""
-        # Start climate with new temperature
-        await self._api.start_climate(self._vin, value)
-        await self.coordinator.async_request_refresh()
+        self._target = value
+        self.async_write_ha_state()

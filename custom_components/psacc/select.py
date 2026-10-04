@@ -71,7 +71,7 @@ class PSACCChargeModeSelect(PSACCBaseSelect):
 
     _attr_name = "Charge mode"
     _attr_icon = "mdi:ev-station"
-    _attr_options = ["immediate", "scheduled", "economic"]
+    _attr_options = ["immediate", "delayed"]
 
     @property
     def unique_id(self):
@@ -80,41 +80,21 @@ class PSACCChargeModeSelect(PSACCBaseSelect):
 
     @property
     def current_option(self) -> str | None:
-        """Return the current selected option."""
-        charging = self.vehicle_data.get("energy", [{}])[0].get("charging", {})
-        mode = charging.get("mode", "immediate")
-        
-        # Map API mode to our options
-        mode_mapping = {
-            "now": "immediate",
-            "schedule": "scheduled",
-            "eco": "economic",
-            "immediate": "immediate",
-            "scheduled": "scheduled",
-            "economic": "economic",
-        }
-        
-        return mode_mapping.get(mode, "immediate")
+        """Mode de charge remonté par la voiture (charging_mode)."""
+        mode = (self.vehicle_data.get("charging_mode") or "").lower()
+        if mode in ("immediate", "delayed"):
+            return mode
+        return None
 
     async def async_select_option(self, option: str) -> None:
-        """Change the selected option."""
-        # Map our options to API modes
-        mode_mapping = {
-            "immediate": "now",
-            "scheduled": "schedule",
-            "economic": "eco",
-        }
-        
-        api_mode = mode_mapping.get(option, "now")
-        
-        # This would need to be implemented in the API client
-        # For now, we'll just log it
-        # await self._api.set_charge_mode(self._vin, api_mode)
-        
+        """immediate = lancer la charge maintenant, delayed = revenir à la charge programmée."""
+        if option == "immediate":
+            await self._api.start_charge(self._vin)
+        else:
+            await self._api.stop_charge(self._vin)
         await self.coordinator.async_request_refresh()
 
     @property
     def available(self) -> bool:
         """Return if entity is available."""
-        charging = self.vehicle_data.get("energy", [{}])[0].get("charging", {})
-        return charging.get("plugged", False)
+        return bool(self.vehicle_data.get("plugged"))

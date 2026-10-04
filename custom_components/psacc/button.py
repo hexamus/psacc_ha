@@ -138,7 +138,7 @@ class PSACCLightsButton(PSACCBaseButton):
 
     async def async_press(self) -> None:
         """Handle the button press."""
-        await self._api.flash_lights(self._vin, 1)
+        await self._api.flash_lights(self._vin, 10)
 
 
 class PSACCWakeupButton(PSACCBaseButton):
@@ -170,5 +170,5 @@ class PSACCRefreshButton(PSACCBaseButton):
         return f"{self._vin}_refresh"
 
     async def async_press(self) -> None:
-        """Handle the button press."""
-        await self.coordinator.async_request_refresh()
+        """Relit l'état depuis le cloud PSA (et non le cache psacc)."""
+        await self.coordinator.async_refresh_from_car()

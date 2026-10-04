@@ -85,8 +85,7 @@ class PSACCChargingSwitch(PSACCBaseSwitch):
     @property
     def is_on(self):
         """Return true if charging."""
-        charging = self.vehicle_data.get("energy", [{}])[0].get("charging", {})
-        return charging.get("status") == "InProgress"
+        return self.vehicle_data.get("charging")
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn on charging."""
@@ -101,8 +100,7 @@ class PSACCChargingSwitch(PSACCBaseSwitch):
     @property
     def available(self) -> bool:
         """Return if entity is available."""
-        charging = self.vehicle_data.get("energy", [{}])[0].get("charging", {})
-        return charging.get("plugged", False)
+        return bool(self.vehicle_data.get("plugged"))
 
 
 class PSACCClimateSwitch(PSACCBaseSwitch):
@@ -119,8 +117,7 @@ class PSACCClimateSwitch(PSACCBaseSwitch):
     @property
     def is_on(self):
         """Return true if climate is on."""
-        precond = self.vehicle_data.get("preconditionning", {})
-        status = precond.get("airConditioning", {}).get("status")
+        status = self.vehicle_data.get("climate_status")
         return status in ["Enabled", "InProgress"]
 
     async def async_turn_on(self, **kwargs: Any) -> None:
